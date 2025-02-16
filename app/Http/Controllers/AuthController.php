@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Auth;
 use Validator;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
+
+
 
 class AuthController extends Controller
 {
@@ -53,4 +56,24 @@ class AuthController extends Controller
             'user'=>auth()->user()
         ]);
     }
+    public function profile(): JsonResponse
+    {
+        $user = auth()->user(); // Use auth()->user() instead of Auth::user()
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return response()->json([
+            'user' => $user
+        ], 200);
+    }
+    public function logout(){
+        auth()->logout();
+        return response()->json([
+            'message'=>'user successfully logout',
+        ],201);
+        
+    }
+
 }
